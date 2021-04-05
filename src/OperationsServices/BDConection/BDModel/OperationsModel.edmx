@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="OperationsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Userid" />
+          </Key>
+          <Property Name="Userid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="EnglishLevel" Type="nvarchar" MaxLength="50" />
+          <Property Name="KnowlEdge" Type="nvarchar" MaxLength="250" />
+          <Property Name="InsertDate" Type="datetime" Nullable="false" />
+          <Property Name="UrlResume" Type="nvarchar" MaxLength="250" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="Roleid" Type="int" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Salt" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="UserLogin" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Function Name="St_GetAccounts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Accountid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="St_GetTeams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="St_GetTeamsUsers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Teamid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="St_GetUsers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="st_InsertAppLogs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Class" Type="nvarchar" Mode="In" />
+          <Parameter Name="Method" Type="nvarchar" Mode="In" />
+          <Parameter Name="ErrorMessage" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="DateOfInsert" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="St_InsertUpdateAccount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Accountid" Type="int" Mode="In" />
+          <Parameter Name="AccountName" Type="nvarchar" Mode="In" />
+          <Parameter Name="ClientName" Type="nvarchar" Mode="In" />
+          <Parameter Name="OperatorName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Teamid" Type="int" Mode="In" />
+          <Parameter Name="HasError" Type="bit" Mode="InOut" />
+        </Function>
+        <Function Name="St_InsertUpdateTeams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Teamid" Type="int" Mode="In" />
+          <Parameter Name="TeamName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Users" Type="xml" Mode="In" />
+          <Parameter Name="HasError" Type="bit" Mode="InOut" />
+        </Function>
+        <Function Name="St_InsertUpdateUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Userid" Type="int" Mode="In" />
+          <Parameter Name="FullName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Roleid" Type="int" Mode="In" />
+          <Parameter Name="Email" Type="nvarchar" Mode="In" />
+          <Parameter Name="Password" Type="nvarchar" Mode="In" />
+          <Parameter Name="UserLogin" Type="nvarchar" Mode="In" />
+          <Parameter Name="Salt" Type="nvarchar" Mode="In" />
+          <Parameter Name="PasswordEdited" Type="bit" Mode="In" />
+          <Parameter Name="HasError" Type="bit" Mode="InOut" />
+        </Function>
+        <Function Name="St_UpdateUserProfile" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Userid" Type="int" Mode="In" />
+          <Parameter Name="FullName" Type="nvarchar" Mode="In" />
+          <Parameter Name="EnglishLevel" Type="nvarchar" Mode="In" />
+          <Parameter Name="KnowlEdge" Type="nvarchar" Mode="In" />
+          <Parameter Name="UrlResume" Type="nvarchar" Mode="In" />
+          <Parameter Name="HasError" Type="bit" Mode="InOut" />
+        </Function>
+        <EntityContainer Name="OperationsModelStoreContainer">
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OperationsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="OperationsEntities" annotation:LazyLoadingEnabled="true" >
+          <FunctionImport Name="St_GetTeamsUsers" ReturnType="Collection(OperationsModel.St_GetTeamsUsers_Result)">
+          <Parameter Name="Teamid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="St_InsertUpdateUser">
+            <Parameter Name="Userid" Mode="In" Type="Int32" />
+            <Parameter Name="FullName" Mode="In" Type="String" />
+            <Parameter Name="Roleid" Mode="In" Type="Int32" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="UserLogin" Mode="In" Type="String" />
+            <Parameter Name="Salt" Mode="In" Type="String" />
+            <Parameter Name="PasswordEdited" Mode="In" Type="Boolean" />
+            <Parameter Name="HasError" Mode="InOut" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="St_UpdateUserProfile">
+            <Parameter Name="Userid" Mode="In" Type="Int32" />
+            <Parameter Name="FullName" Mode="In" Type="String" />
+            <Parameter Name="EnglishLevel" Mode="In" Type="String" />
+            <Parameter Name="KnowlEdge" Mode="In" Type="String" />
+            <Parameter Name="UrlResume" Mode="In" Type="String" />
+            <Parameter Name="HasError" Mode="InOut" Type="Boolean" />
+          </FunctionImport>
+          <EntitySet Name="Users" EntityType="OperationsModel.User" />
+          <FunctionImport Name="St_GetUsers" ReturnType="Collection(OperationsModel.St_GetUsers_Result)">
+          <Parameter Name="Userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="St_GetTeams" ReturnType="Collection(OperationsModel.St_GetTeams_Result)" />
+          <FunctionImport Name="St_InsertUpdateTeams">
+            <Parameter Name="Teamid" Mode="In" Type="Int32" />
+            <Parameter Name="TeamName" Mode="In" Type="String" />
+            <Parameter Name="Users" Mode="In" Type="String" />
+            <Parameter Name="HasError" Mode="InOut" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="St_InsertUpdateAccount">
+            <Parameter Name="Accountid" Mode="In" Type="Int32" />
+            <Parameter Name="AccountName" Mode="In" Type="String" />
+            <Parameter Name="ClientName" Mode="In" Type="String" />
+            <Parameter Name="OperatorName" Mode="In" Type="String" />
+            <Parameter Name="Teamid" Mode="In" Type="Int32" />
+            <Parameter Name="HasError" Mode="InOut" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="St_GetAccounts" ReturnType="Collection(OperationsModel.St_GetAccounts_Result)">
+          <Parameter Name="Accountid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="st_InsertAppLogs">
+            <Parameter Name="Class" Mode="In" Type="String" />
+            <Parameter Name="Method" Mode="In" Type="String" />
+            <Parameter Name="ErrorMessage" Mode="In" Type="String" />
+            <Parameter Name="DateOfInsert" Mode="In" Type="DateTime" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="St_GetTeamsUsers_Result">
+          <Property Type="Int32" Name="Teamid" Nullable="false" />
+          <Property Type="String" Name="TeamName" Nullable="false" MaxLength="250" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="UserLogin" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="FullName" Nullable="false" MaxLength="250" />
+        </ComplexType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Userid" />
+          </Key>
+          <Property Name="Userid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="EnglishLevel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KnowlEdge" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UrlResume" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="Roleid" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Salt" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="UserLogin" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="St_GetUsers_Result">
+          <Property Type="Int32" Name="Userid" Nullable="false" />
+          <Property Type="String" Name="FullName" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="EnglishLevel" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="KnowlEdge" Nullable="true" MaxLength="250" />
+          <Property Type="DateTime" Name="InsertDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="UrlResume" Nullable="true" MaxLength="250" />
+          <Property Type="Boolean" Name="isActive" Nullable="false" />
+          <Property Type="Int32" Name="Roleid" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="UserLogin" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="St_GetTeams_Result">
+          <Property Type="Int32" Name="Teamid" Nullable="false" />
+          <Property Type="String" Name="TeamName" Nullable="false" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="St_GetAccounts_Result">
+          <Property Type="Int32" Name="Accountid" Nullable="false" />
+          <Property Type="String" Name="AccountName" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="ClientName" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="OperatorName" Nullable="false" MaxLength="250" />
+          <Property Type="Int32" Name="Teamid" Nullable="false" />
+          <Property Type="String" Name="TeamName" Nullable="false" MaxLength="250" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OperationsModelStoreContainer" CdmEntityContainer="OperationsEntities" >
+          <FunctionImportMapping FunctionImportName="St_GetTeamsUsers" FunctionName="OperationsModel.Store.St_GetTeamsUsers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="OperationsModel.St_GetTeamsUsers_Result">
+                <ScalarProperty Name="Teamid" ColumnName="Teamid" />
+                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserLogin" ColumnName="UserLogin" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="St_InsertUpdateUser" FunctionName="OperationsModel.Store.St_InsertUpdateUser" />
+          <FunctionImportMapping FunctionImportName="St_UpdateUserProfile" FunctionName="OperationsModel.Store.St_UpdateUserProfile" />
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="OperationsModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserLogin" ColumnName="UserLogin" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Roleid" ColumnName="Roleid" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="UrlResume" ColumnName="UrlResume" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="KnowlEdge" ColumnName="KnowlEdge" />
+                <ScalarProperty Name="EnglishLevel" ColumnName="EnglishLevel" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Userid" ColumnName="Userid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="St_GetUsers" FunctionName="OperationsModel.Store.St_GetUsers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="OperationsModel.St_GetUsers_Result">
+                <ScalarProperty Name="Userid" ColumnName="Userid" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="EnglishLevel" ColumnName="EnglishLevel" />
+                <ScalarProperty Name="KnowlEdge" ColumnName="KnowlEdge" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="UrlResume" ColumnName="UrlResume" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Roleid" ColumnName="Roleid" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserLogin" ColumnName="UserLogin" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="St_GetTeams" FunctionName="OperationsModel.Store.St_GetTeams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="OperationsModel.St_GetTeams_Result">
+                <ScalarProperty Name="Teamid" ColumnName="Teamid" />
+                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="St_InsertUpdateTeams" FunctionName="OperationsModel.Store.St_InsertUpdateTeams" />
+          <FunctionImportMapping FunctionImportName="St_InsertUpdateAccount" FunctionName="OperationsModel.Store.St_InsertUpdateAccount" />
+          <FunctionImportMapping FunctionImportName="St_GetAccounts" FunctionName="OperationsModel.Store.St_GetAccounts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="OperationsModel.St_GetAccounts_Result">
+                <ScalarProperty Name="Accountid" ColumnName="Accountid" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="OperatorName" ColumnName="OperatorName" />
+                <ScalarProperty Name="Teamid" ColumnName="Teamid" />
+                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="st_InsertAppLogs" FunctionName="OperationsModel.Store.st_InsertAppLogs" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
