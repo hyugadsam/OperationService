@@ -29,15 +29,6 @@ namespace BDConection.BDModel
     
         public virtual DbSet<User> Users { get; set; }
     
-        public virtual ObjectResult<St_GetTeamsUsers_Result> St_GetTeamsUsers(Nullable<int> teamid)
-        {
-            var teamidParameter = teamid.HasValue ?
-                new ObjectParameter("Teamid", teamid) :
-                new ObjectParameter("Teamid", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<St_GetTeamsUsers_Result>("St_GetTeamsUsers", teamidParameter);
-        }
-    
         public virtual int St_InsertUpdateUser(Nullable<int> userid, string fullName, Nullable<int> roleid, string email, string password, string userLogin, string salt, Nullable<bool> passwordEdited, ObjectParameter hasError)
         {
             var useridParameter = userid.HasValue ?
@@ -184,6 +175,47 @@ namespace BDConection.BDModel
                 new ObjectParameter("DateOfInsert", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("st_InsertAppLogs", classParameter, methodParameter, errorMessageParameter, dateOfInsertParameter);
+        }
+    
+        public virtual int St_DeleteAccount(Nullable<int> accountid, ObjectParameter hasError)
+        {
+            var accountidParameter = accountid.HasValue ?
+                new ObjectParameter("Accountid", accountid) :
+                new ObjectParameter("Accountid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("St_DeleteAccount", accountidParameter, hasError);
+        }
+    
+        public virtual int St_DeleteTeam(Nullable<int> teamid, ObjectParameter hasError)
+        {
+            var teamidParameter = teamid.HasValue ?
+                new ObjectParameter("Teamid", teamid) :
+                new ObjectParameter("Teamid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("St_DeleteTeam", teamidParameter, hasError);
+        }
+    
+        public virtual int St_DeleteUser(Nullable<int> userid, ObjectParameter hasError)
+        {
+            var useridParameter = userid.HasValue ?
+                new ObjectParameter("Userid", userid) :
+                new ObjectParameter("Userid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("St_DeleteUser", useridParameter, hasError);
+        }
+    
+        public virtual ObjectResult<St_GetTeamsLogs_Result> St_GetTeamsLogs()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<St_GetTeamsLogs_Result>("St_GetTeamsLogs");
+        }
+    
+        public virtual ObjectResult<St_GetTeamsUsers_Result> St_GetTeamsUsers(Nullable<int> teamid)
+        {
+            var teamidParameter = teamid.HasValue ?
+                new ObjectParameter("Teamid", teamid) :
+                new ObjectParameter("Teamid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<St_GetTeamsUsers_Result>("St_GetTeamsUsers", teamidParameter);
         }
     }
 }

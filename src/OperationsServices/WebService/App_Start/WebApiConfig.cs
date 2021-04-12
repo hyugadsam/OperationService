@@ -11,6 +11,8 @@ namespace WebService
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+            //Cors
+            config.EnableCors();
 
             config.MessageHandlers.Add(new TokenValidationHandler());
 

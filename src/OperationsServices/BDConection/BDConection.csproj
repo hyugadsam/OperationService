@@ -83,6 +83,9 @@
     <Compile Include="BDModel\St_GetAccounts_Result.cs">
       <DependentUpon>OperationsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="BDModel\St_GetTeamsLogs_Result.cs">
+      <DependentUpon>OperationsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="BDModel\St_GetTeamsUsers_Result.cs">
       <DependentUpon>OperationsModel.tt</DependentUpon>
     </Compile>
@@ -95,11 +98,13 @@
     <Compile Include="BDModel\User.cs">
       <DependentUpon>OperationsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Loggin\LoggerModel.cs" />
     <Compile Include="Model\AccountModel.cs" />
     <Compile Include="Model\TeamsModel.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\Hash.cs" />
+    <Compile Include="Utils\XmlUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

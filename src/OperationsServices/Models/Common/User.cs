@@ -16,5 +16,6 @@ namespace Models.Common
         public string Salt {get; set;}
         public string Password {get; set;}
         public string UserLogin {get; set;}
+        public string Description { get; set; }
     }
 }

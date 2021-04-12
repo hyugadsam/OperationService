@@ -2,6 +2,7 @@ using System.Web.Http;
 using WebActivatorEx;
 using WebService;
 using Swashbuckle.Application;
+using System.Web.Http.Description;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
@@ -9,6 +10,12 @@ namespace WebService
 {
     public class SwaggerConfig
     {
+        public static bool ResolveVersionSupportByRouteConstraint(ApiDescription apiDesc, string targetApiVersion)
+        {
+            return apiDesc.ActionDescriptor.ActionName.Contains($"{targetApiVersion}");
+            //return apiDesc.ID.Contains($"/{targetApiVersion}/");
+        }
+
         public static void Register()
         {
             var thisAssembly = typeof(SwaggerConfig).Assembly;
@@ -32,7 +39,7 @@ namespace WebService
                         // hold additional metadata for an API. Version and title are required but you can also provide
                         // additional fields by chaining methods off SingleApiVersion.
                         //
-                        c.SingleApiVersion("v1", "WebService");
+                        //c.SingleApiVersion("v1", "WebService");
 
                         // If you want the output Swagger docs to be indented properly, enable the "PrettyPrint" option.
                         //
@@ -43,13 +50,14 @@ namespace WebService
                         // included in the docs for a given API version. Like "SingleApiVersion", each call to "Version"
                         // returns an "Info" builder so you can provide additional metadata per API version.
                         //
-                        //c.MultipleApiVersions(
-                        //    (apiDesc, targetApiVersion) => ResolveVersionSupportByRouteConstraint(apiDesc, targetApiVersion),
-                        //    (vc) =>
-                        //    {
-                        //        vc.Version("v2", "Swashbuckle Dummy API V2");
-                        //        vc.Version("v1", "Swashbuckle Dummy API V1");
-                        //    });
+                        //public void MultipleApiVersions(Func<ApiDescription, string, bool> versionSupportResolver, Action<VersionInfoBuilder> configure);
+                        c.MultipleApiVersions(
+                            (apiDesc, targetApiVersion) => ResolveVersionSupportByRouteConstraint(apiDesc, targetApiVersion),
+                            (vc) =>
+                            {
+                                vc.Version("v1", "Operation API V1");
+                                vc.Version("v2", "Dummy API V2");
+                            });
 
                         // You can use "BasicAuth", "ApiKey" or "OAuth2" options to describe security schemes for the API.
                         // See https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md for more details.
@@ -232,7 +240,7 @@ namespace WebService
                         // a discovery URL for each version. This provides a convenient way for users to browse documentation
                         // for different API versions.
                         //
-                        //c.EnableDiscoveryUrlSelector();
+                        c.EnableDiscoveryUrlSelector();
 
                         // If your API supports the OAuth2 Implicit flow, and you've described it correctly, according to
                         // the Swagger 2.0 specification, you can enable UI support as shown below.

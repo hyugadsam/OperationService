@@ -69,5 +69,41 @@ namespace ApplicationServices
             }
         }
 
+        public GetTeamLogsResponse GetTeamLogs()
+        {
+            try
+            {
+                var Service = new TeamsModel();
+                return Service.GetTeamLogs();
+            }
+            catch (Exception ex)
+            {
+                SaveError("TeamsAppService", "GetTeamLogs", ex.ToString(), DateTime.Now);
+                return new GetTeamLogsResponse
+                {
+                    isSaved = false,
+                    Message = ex.ToString()
+                };
+            }
+        }
+
+        public BasicResponse DeleteTeam(int Teamid)
+        {
+            try
+            {
+                var Service = new TeamsModel();
+                return Service.DeleteTeam(Teamid);
+            }
+            catch (Exception ex)
+            {
+                SaveError("TeamsAppService", "DeleteTeam", ex.ToString(), DateTime.Now);
+                return new BasicResponse
+                {
+                    isSaved = false,
+                    Message = ex.ToString()
+                };
+            }
+        }
+
     }
 }

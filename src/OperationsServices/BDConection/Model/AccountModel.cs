@@ -45,11 +45,12 @@ namespace BDConection.Model
             }
             catch (Exception ex)
             {
-                return new GetAccountsResponse
-                {
-                    isSaved = false,
-                    Message = ex.Message
-                };
+                throw ex;
+                //return new GetAccountsResponse
+                //{
+                //    isSaved = false,
+                //    Message = ex.Message
+                //};
             }
         }
 
@@ -95,12 +96,50 @@ namespace BDConection.Model
             }
             catch (Exception ex)
             {
-                return new BasicResponse
-                {
-                    isSaved = false,
-                    Message = ex.Message
-                };
+                throw ex;
+                //return new BasicResponse
+                //{
+                //    isSaved = false,
+                //    Message = ex.Message
+                //;
             }
         }
+
+        public BasicResponse DeleteAccount(int Accountid)
+        {
+            try
+            {
+                using (var context = new OperationsEntities())
+                {
+                    System.Data.Entity.Core.Objects.ObjectParameter HasError = new System.Data.Entity.Core.Objects.ObjectParameter("HasError", false);
+                    var result = context.St_DeleteAccount(Accountid, HasError);
+                    if (Convert.ToBoolean(HasError.Value))
+                    {
+                        return new BasicResponse
+                        {
+                            isSaved = false,
+                            Message = "Delete Error"
+                        };
+                    }
+
+                    return new BasicResponse
+                    {
+                        isSaved = true,
+                        Message = "Delete Success"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                //return new BasicResponse
+                //{
+                //    isSaved = false,
+                //    Message = ex.Message
+                //};
+            }
+        }
+
+
     }
 }

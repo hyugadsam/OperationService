@@ -1,4 +1,5 @@
 ﻿using BDConection.BDModel;
+using BDConection.Utils;
 using Models.Request;
 using Models.Response;
 using System;
@@ -42,11 +43,12 @@ namespace BDConection.Model
             }
             catch (Exception ex)
             {
-                return new GetTeamsResponse
-                {
-                    isSaved = false,
-                    Message = ex.Message
-                };
+                throw ex;
+                //return new GetTeamsResponse
+                //{
+                //    isSaved = false,
+                //    Message = ex.Message
+                //};
             }
         }
 
@@ -77,8 +79,8 @@ namespace BDConection.Model
                     {
                         Teamid = t.Teamid,
                         Name = t.Name,
-                        Users = result.Where(r => r.Teamid == t.Teamid) //Filtrar por team
-                        .Select(u => new Models.Common.User { Userid = u.UserId, UserLogin = u.UserLogin, FullName = u.FullName }).ToList() //Obtener lista de user
+                        Users = result.Where(r => r.UserId != null && r.Teamid == t.Teamid) //Filtrar por team
+                        .Select(u => new Models.Common.User { Userid = u.UserId.Value, UserLogin = u.UserLogin, FullName = u.FullName }).ToList() //Obtener lista de user
                     }).ToList();
 
                     return new GetTeamsResponse
@@ -92,11 +94,12 @@ namespace BDConection.Model
             }
             catch (Exception ex)
             {
-                return new GetTeamsResponse
-                {
-                    isSaved = false,
-                    Message = ex.Message
-                };
+                throw ex;
+                //return new GetTeamsResponse
+                //{
+                //    isSaved = false,
+                //    Message = ex.Message
+                //};
             }
         }
 
@@ -144,11 +147,91 @@ namespace BDConection.Model
             }
             catch (Exception ex)
             {
-                return new BasicResponse
+                throw ex;
+                //return new BasicResponse
+                //{
+                //    isSaved = false,
+                //    Message = ex.Message
+                //};
+            }
+        }
+
+        public GetTeamLogsResponse GetTeamLogs()
+        {
+            try
+            {
+                using (var context = new OperationsEntities())
                 {
-                    isSaved = false,
-                    Message = ex.Message
-                };
+                    var result = context.St_GetTeamsLogs().ToList();
+                    if (result?.Count == 0)
+                    {
+                        return new GetTeamLogsResponse
+                        {
+                            isSaved = false,
+                            Message = "0 TeamsLogs or Error"
+                        };
+                    }
+                    List<Models.Common.TeamLog> teams = result.Select(t => new Models.Common.TeamLog
+                    {
+                        Name = t.TeamName,
+                        Teamid = t.Teamid,
+                        DateOfMovement = t.DateofMovement,
+                        Users = XmlUtility.ToUserList(t.OldUsers),
+                        NewUsers = XmlUtility.ToUserList(t.NewUsers)
+                    }).ToList();
+
+                    return new GetTeamLogsResponse
+                    {
+                        isSaved = true,
+                        Message = "Success",
+                        Logs = teams
+                    };
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                //return new GetTeamLogsResponse
+                //{
+                //    isSaved = false,
+                //    Message = ex.Message
+                //};
+            }
+        }
+
+        public BasicResponse DeleteTeam(int Teamid)
+        {
+            try
+            {
+                using (var context = new OperationsEntities())
+                {
+                    System.Data.Entity.Core.Objects.ObjectParameter HasError = new System.Data.Entity.Core.Objects.ObjectParameter("HasError", false);
+                    var result = context.St_DeleteTeam(Teamid, HasError);
+                    if (Convert.ToBoolean(HasError.Value))
+                    {
+                        return new BasicResponse
+                        {
+                            isSaved = false,
+                            Message = "Delete Error"
+                        };
+                    }
+
+                    return new BasicResponse
+                    {
+                        isSaved = true,
+                        Message = "Delete Success"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                //return new BasicResponse
+                //{
+                //    isSaved = false,
+                //    Message = ex.Message
+                //};
             }
         }
 

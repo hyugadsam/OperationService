@@ -59,5 +59,25 @@ namespace ApplicationServices
                 };
             }
         }
+
+        public BasicResponse DeleteAccount(int Accountid)
+        {
+            try
+            {
+                var Service = new AccountModel();
+                return Service.DeleteAccount(Accountid);
+            }
+            catch (Exception ex)
+            {
+                SaveError("AccountAppService", "DeleteAccount", ex.ToString(), DateTime.Now);
+                return new GetAccountsResponse
+                {
+                    isSaved = false,
+                    Message = ex.ToString()
+                };
+            }
+        }
+
+
     }
 }

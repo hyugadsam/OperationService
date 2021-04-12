@@ -22,10 +22,23 @@
           <Property Name="Password" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="UserLogin" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
+        <Function Name="St_DeleteAccount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Accountid" Type="int" Mode="In" />
+          <Parameter Name="HasError" Type="bit" Mode="InOut" />
+        </Function>
+        <Function Name="St_DeleteTeam" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Teamid" Type="int" Mode="In" />
+          <Parameter Name="HasError" Type="bit" Mode="InOut" />
+        </Function>
+        <Function Name="St_DeleteUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Userid" Type="int" Mode="In" />
+          <Parameter Name="HasError" Type="bit" Mode="InOut" />
+        </Function>
         <Function Name="St_GetAccounts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Accountid" Type="int" Mode="In" />
         </Function>
         <Function Name="St_GetTeams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="St_GetTeamsLogs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="St_GetTeamsUsers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Teamid" Type="int" Mode="In" />
         </Function>
@@ -79,9 +92,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="OperationsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="OperationsEntities" annotation:LazyLoadingEnabled="true" >
-          <FunctionImport Name="St_GetTeamsUsers" ReturnType="Collection(OperationsModel.St_GetTeamsUsers_Result)">
-          <Parameter Name="Teamid" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="St_InsertUpdateUser">
             <Parameter Name="Userid" Mode="In" Type="Int32" />
             <Parameter Name="FullName" Mode="In" Type="String" />
@@ -129,14 +139,23 @@
             <Parameter Name="ErrorMessage" Mode="In" Type="String" />
             <Parameter Name="DateOfInsert" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <FunctionImport Name="St_DeleteAccount">
+            <Parameter Name="Accountid" Mode="In" Type="Int32" />
+            <Parameter Name="HasError" Mode="InOut" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="St_DeleteTeam">
+            <Parameter Name="Teamid" Mode="In" Type="Int32" />
+            <Parameter Name="HasError" Mode="InOut" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="St_DeleteUser">
+            <Parameter Name="Userid" Mode="In" Type="Int32" />
+            <Parameter Name="HasError" Mode="InOut" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="St_GetTeamsLogs" ReturnType="Collection(OperationsModel.St_GetTeamsLogs_Result)" />
+          <FunctionImport Name="St_GetTeamsUsers" ReturnType="Collection(OperationsModel.St_GetTeamsUsers_Result)">
+            <Parameter Name="Teamid" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
-        <ComplexType Name="St_GetTeamsUsers_Result">
-          <Property Type="Int32" Name="Teamid" Nullable="false" />
-          <Property Type="String" Name="TeamName" Nullable="false" MaxLength="250" />
-          <Property Type="Int32" Name="UserId" Nullable="false" />
-          <Property Type="String" Name="UserLogin" Nullable="false" MaxLength="20" />
-          <Property Type="String" Name="FullName" Nullable="false" MaxLength="250" />
-        </ComplexType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Userid" />
@@ -179,23 +198,26 @@
           <Property Type="Int32" Name="Teamid" Nullable="false" />
           <Property Type="String" Name="TeamName" Nullable="false" MaxLength="250" />
         </ComplexType>
+        <ComplexType Name="St_GetTeamsLogs_Result">
+          <Property Type="Int32" Name="Teamid" Nullable="false" />
+          <Property Type="String" Name="TeamName" Nullable="false" MaxLength="250" />
+          <Property Type="DateTime" Name="DateofMovement" Nullable="false" Precision="23" />
+          <Property Type="String" Name="OldUsers" Nullable="true" MaxLength="Max" />
+          <Property Type="String" Name="NewUsers" Nullable="true" MaxLength="Max" />
+        </ComplexType>
+        <ComplexType Name="St_GetTeamsUsers_Result">
+          <Property Type="Int32" Name="Teamid" Nullable="false" />
+          <Property Type="String" Name="TeamName" Nullable="false" MaxLength="250" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+          <Property Type="String" Name="UserLogin" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="FullName" Nullable="true" MaxLength="250" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="OperationsModelStoreContainer" CdmEntityContainer="OperationsEntities" >
-          <FunctionImportMapping FunctionImportName="St_GetTeamsUsers" FunctionName="OperationsModel.Store.St_GetTeamsUsers">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="OperationsModel.St_GetTeamsUsers_Result">
-                <ScalarProperty Name="Teamid" ColumnName="Teamid" />
-                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="UserLogin" ColumnName="UserLogin" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="St_InsertUpdateUser" FunctionName="OperationsModel.Store.St_InsertUpdateUser" />
           <FunctionImportMapping FunctionImportName="St_UpdateUserProfile" FunctionName="OperationsModel.Store.St_UpdateUserProfile" />
           <EntitySetMapping Name="Users">
@@ -256,6 +278,31 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="st_InsertAppLogs" FunctionName="OperationsModel.Store.st_InsertAppLogs" />
+          <FunctionImportMapping FunctionImportName="St_DeleteAccount" FunctionName="OperationsModel.Store.St_DeleteAccount" />
+          <FunctionImportMapping FunctionImportName="St_DeleteTeam" FunctionName="OperationsModel.Store.St_DeleteTeam" />
+          <FunctionImportMapping FunctionImportName="St_DeleteUser" FunctionName="OperationsModel.Store.St_DeleteUser" />
+          <FunctionImportMapping FunctionImportName="St_GetTeamsLogs" FunctionName="OperationsModel.Store.St_GetTeamsLogs">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="OperationsModel.St_GetTeamsLogs_Result">
+                <ScalarProperty Name="Teamid" ColumnName="Teamid" />
+                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+                <ScalarProperty Name="DateofMovement" ColumnName="DateofMovement" />
+                <ScalarProperty Name="OldUsers" ColumnName="OldUsers" />
+                <ScalarProperty Name="NewUsers" ColumnName="NewUsers" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="St_GetTeamsUsers" FunctionName="OperationsModel.Store.St_GetTeamsUsers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="OperationsModel.St_GetTeamsUsers_Result">
+                <ScalarProperty Name="Teamid" ColumnName="Teamid" />
+                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserLogin" ColumnName="UserLogin" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

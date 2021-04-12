@@ -64,11 +64,12 @@ namespace BDConection.Model
             }
             catch (Exception ex)
             {
-                return new AuthenticateResponse
-                {
-                    isSaved = false,
-                    Message = ex.Message
-                };
+                throw ex;
+                //return new AuthenticateResponse
+                //{
+                //    isSaved = false,
+                //    Message = ex.Message
+                //};
             }
         }
 
@@ -93,7 +94,13 @@ namespace BDConection.Model
                         isActive = u.isActive,
                         Roleid = u.Roleid,
                         Userid = u.Userid,
-                        UserLogin = u.UserLogin
+                        UserLogin = u.UserLogin,
+                        FullName = u.FullName,
+                        Email = u.Email,
+                        EnglishLevel = u.EnglishLevel,
+                        KnowlEdge = u.KnowlEdge,
+                        UrlResume = u.UrlResume,
+                        Description = u.Description
                     }).ToList();
 
                     return new GetUsersResponse
@@ -107,11 +114,12 @@ namespace BDConection.Model
             }
             catch (Exception ex)
             {
-                return new GetUsersResponse
-                {
-                    isSaved = false,
-                    Message = ex.Message
-                };
+                //return new GetUsersResponse
+                //{
+                //    isSaved = false,
+                //    Message = ex.Message
+                //};
+                throw ex;
             }
         }
 
@@ -171,11 +179,12 @@ namespace BDConection.Model
             }
             catch (Exception ex)
             {
-                return new BasicResponse
-                {
-                    isSaved = false,
-                    Message = ex.Message
-                };
+                throw ex;
+                //return new BasicResponse
+                //{
+                //    isSaved = false,
+                //    Message = ex.Message
+                //};
             }
         }
 
@@ -209,13 +218,50 @@ namespace BDConection.Model
             catch (Exception ex)
             {
                 //LogError
-                return new BasicResponse
-                {
-                    isSaved = false,
-                    Message = ex.Message
-                };
+                throw ex;
+                //return new BasicResponse
+                //{
+                //    isSaved = false,
+                //    Message = ex.Message
+                //};
             }
         }
+
+        public BasicResponse DeleteUser(int Userid)
+        {
+            try
+            {
+                using (var context = new OperationsEntities())
+                {
+                    System.Data.Entity.Core.Objects.ObjectParameter HasError = new System.Data.Entity.Core.Objects.ObjectParameter("HasError", false);
+                    var result = context.St_DeleteUser(Userid, HasError);
+                    if (Convert.ToBoolean(HasError.Value))
+                    {
+                        return new BasicResponse
+                        {
+                            isSaved = false,
+                            Message = "Delete Error"
+                        };
+                    }
+
+                    return new BasicResponse
+                    {
+                        isSaved = true,
+                        Message = "Delete Success"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                //return new BasicResponse
+                //{
+                //    isSaved = false,
+                //    Message = ex.Message
+                //};
+            }
+        }
+
 
     }
 }

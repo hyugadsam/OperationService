@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models.Request;
 using System;
+using System.Linq;
 using WebService.Controllers;
 
 namespace WebService.Tests.Controllers
@@ -63,6 +64,32 @@ namespace WebService.Tests.Controllers
             Assert.IsNotNull(response);
             Assert.IsTrue(response.isSaved);
             Assert.IsTrue(response.Teams?.Count > 0);
+        }
+
+        [TestMethod]
+        public void GetAllTeamsLogs()
+        {
+            TeamsController controller = new TeamsController();
+
+            var response = controller.GetTeamLogs();
+
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.isSaved);
+            Assert.IsTrue(response.Logs?.Count > 0);
+        }
+
+        [TestMethod]
+        public void DeleteTeam()
+        {
+            TeamsController controller = new TeamsController();
+            var teams = controller.GetAllTeams();
+            Assert.IsTrue(teams.isSaved);
+            Assert.IsTrue(teams.Teams?.Count > 0);
+
+            var response = controller.DeleteTeam(teams.Teams.Last().Teamid);
+
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.isSaved);
         }
 
     }

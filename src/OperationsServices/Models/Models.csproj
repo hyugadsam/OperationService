@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Common\Account.cs" />
     <Compile Include="Common\Team.cs" />
+    <Compile Include="Common\TeamLog.cs" />
     <Compile Include="Common\User.cs" />
     <Compile Include="Enums\EnumsClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Response\AuthenticateResponse.cs" />
     <Compile Include="Response\BasicResponse.cs" />
     <Compile Include="Response\GetAccountsResponse.cs" />
+    <Compile Include="Response\GetTeamLogsResponse.cs" />
     <Compile Include="Response\GetTeamsResponse.cs" />
     <Compile Include="Response\GetUsersResponse.cs" />
   </ItemGroup>

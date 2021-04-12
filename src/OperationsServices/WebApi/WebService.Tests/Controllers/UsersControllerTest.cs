@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models.Request;
 using System;
+using System.Linq;
 using WebService.Controllers;
 
 namespace WebService.Tests.Controllers
@@ -174,7 +175,19 @@ namespace WebService.Tests.Controllers
             Assert.IsTrue(response.UsersList.Count > 0);
         }
 
+        [TestMethod]
+        public void DeleteUser()
+        {
+            UsersController controller = new UsersController();
+            var users = controller.GetUsers();
+            Assert.IsTrue(users.isSaved);
+            Assert.IsTrue(users.UsersList?.Count > 0);
 
+            var response = controller.DeleteUser(users.UsersList.Last().Userid);
+
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.isSaved);
+        }
 
 
     }

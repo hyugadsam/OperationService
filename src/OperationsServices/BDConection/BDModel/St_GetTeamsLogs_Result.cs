@@ -11,12 +11,12 @@ namespace BDConection.BDModel
 {
     using System;
     
-    public partial class St_GetTeamsUsers_Result
+    public partial class St_GetTeamsLogs_Result
     {
         public int Teamid { get; set; }
         public string TeamName { get; set; }
-        public Nullable<int> UserId { get; set; }
-        public string UserLogin { get; set; }
-        public string FullName { get; set; }
+        public System.DateTime DateofMovement { get; set; }
+        public string OldUsers { get; set; }
+        public string NewUsers { get; set; }
     }
 }

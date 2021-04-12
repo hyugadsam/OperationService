@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models.Common;
 using System;
+using System.Linq;
 using WebService.Controllers;
 
 namespace WebService.Tests.Controllers
@@ -68,6 +69,20 @@ namespace WebService.Tests.Controllers
             Assert.IsNotNull(response);
             Assert.IsTrue(response.isSaved);
             Assert.IsTrue(response.Accounts?.Count > 0);
+        }
+
+        [TestMethod]
+        public void DeleteAccount()
+        {
+            AccountController controller = new AccountController();
+            var accounts = controller.GetAllAccounts();
+            Assert.IsTrue(accounts.isSaved);
+            Assert.IsTrue(accounts.Accounts?.Count > 0);
+
+            var response = controller.DeleteAccount(accounts.Accounts.Last().Accountid);
+
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.isSaved);
         }
 
     }

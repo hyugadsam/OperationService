@@ -84,5 +84,23 @@ namespace ApplicationServices
             }
         }
 
+        public BasicResponse DeleteUser(int Userid)
+        {
+            try
+            {
+                var Service = new UserModel();
+                return Service.DeleteUser(Userid);
+            }
+            catch (Exception ex)
+            {
+                SaveError("UserAppService", "DeleteUser", ex.ToString(), DateTime.Now);
+                return new BasicResponse
+                {
+                    isSaved = false,
+                    Message = ex.ToString()
+                };
+            }
+        }
+
     }
 }
